@@ -5,11 +5,13 @@ import Grid from './components/Grid'
 import Header from './components/Header'
 import ResourceBar from './components/ResourceBar'
 import ResizableDiv from './components/ResizableDiv'
+import Drag from './components/Drag'
 
 function App() {
 
 
   const [resources, setResources] = useState(0)
+
   return (
     <div className=''>
 

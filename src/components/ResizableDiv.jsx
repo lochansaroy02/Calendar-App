@@ -1,15 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Draggable from 'react-draggable';
 import { getRandomColor } from './Utils/colorGenerator';
 
-const ResizableDiv = () => {
-
+const ResizableDiv = ({ inner, outer }) => {
+  const [isResizing, setIsResizing] = useState(false);
+  const [pressed, setPressed] = useState(false)
   const [color, setColor] = useState(getRandomColor());
+  const [isHovered, setIsHovered] = useState(false);
   const [divWidth, setDivWidth] = useState(96);
 
   const refBox = useRef(null);
   const refLeft = useRef(null);
   const refRight = useRef(null);
   const minWidth = 96;
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
 
   useEffect(() => {
 
@@ -31,39 +43,43 @@ const ResizableDiv = () => {
 
     const onMouseUpLeft = () => {
       document.removeEventListener('mousemove', onMouseMoveLeft);
+      setIsResizing(false)
     };
 
     const onMouseDownLeft = (e) => {
+      setIsResizing(true)
       xCord = e.clientX;
       document.addEventListener('mousemove', onMouseMoveLeft);
       document.addEventListener('mouseup', onMouseUpLeft);
     };
 
-    // RIGHT RESIZE
+
     const onMouseMoveRight = (e) => {
       const dx = e.clientX - xCord;
+      console.log(dx)
       if (width + dx >= minWidth) {
         width += dx;
         xCord = e.clientX;
         resizableBox.style.width = `${width}px`;
         setDivWidth(width)
-        // console.log(width)
       }
     };
 
     const onMouseUpRight = () => {
       document.removeEventListener('mousemove', onMouseMoveRight);
+      setIsResizing(false)
     };
 
     const onMouseDownRight = (e) => {
+      setIsResizing(true)
       xCord = e.clientX;
       document.addEventListener('mousemove', onMouseMoveRight);
       document.addEventListener('mouseup', onMouseUpRight);
     };
 
     const resizeLeft = refLeft.current;
-    resizeLeft.addEventListener('mousedown', onMouseDownLeft);
     const resizeRight = refRight.current;
+    resizeLeft.addEventListener('mousedown', onMouseDownLeft);
     resizeRight.addEventListener('mousedown', onMouseDownRight);
 
     return () => {
@@ -73,24 +89,35 @@ const ResizableDiv = () => {
   }, []);
 
   return (
-    <div className="relative">
-      <div ref={refBox} style={{
-        backgroundColor: color,
-        width: "96px",
 
-      }} className=" h-12  z-40    rounded-lg relative">
 
-        <div ref={refLeft} className="absolute left-1 top-0 h-14  w-1   cursor-ew-resize"> </div>
 
-        <div className=' text-white  '>
-          <h1>Event </h1>
+    <Draggable disabled={isResizing} >
+      <div className="relative z-30 ">
+        <div ref={refBox}
+          onMouseDown={() => setPressed(true)}
+          onMouseUp={() => setPressed(false)}
 
-          <h1 className='text-xs'>  {divWidth < 100 ? "12 AM.." : "12AM - 12PM"}</h1>
+          style={{
+            width: "96px",
+            backgroundColor: isHovered ? color.lighterColor : color.originalColor,
+            border: isHovered ? "2px solid white" : "2px solid transparent",
+            transition: "background-color 0.2s, border 0.3s"
+          }} onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave} className=" h-full z-30  p-1   rounded-lg relative">
 
+
+          <div ref={refLeft} className="absolute left-0  rounded-s-lg top-0 h-12    w-1   cursor-ew-resize"> </div>
+
+          <div className=' text-white font-semibold flex flex-col items-start pl-2 '>
+            <h1>Event </h1>
+            <h1 className='text-xs'>  {divWidth < 100 ? "12 AM.." : "12AM - 12PM"}</h1>
+          </div>
+
+          <div ref={refRight} className="absolute right-0  top-0 h-12 w-1 rounded-e-lg  cursor-ew-resize"></div>
         </div>
-        <div ref={refRight} className="absolute right-1 top-0 h-14 w-1 rounded-e-lg  cursor-ew-resize"></div>
-      </div>
-    </div>
+      </div >
+    </Draggable>
   );
 };
 

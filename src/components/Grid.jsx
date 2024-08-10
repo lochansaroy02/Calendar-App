@@ -1,15 +1,14 @@
-import React, { useRef, useState } from 'react';
-import { getRandomColor } from './Utils/colorGenerator';
+import React, { useState } from 'react';
 import ResizableDiv from './ResizableDiv';
 
 const Grid = ({ resources }) => {
-    
-    const color = getRandomColor();
+    const date = new Date();
+    console.log(date)
+    let dd = String(date.getDate()).padStart(2, '0');
+    console.log(dd)
+
     const [clickedCells, setClickedCells] = useState({});
-    const [width, setWidth] = useState(100);
-    const [isDragging, setIsDragging] = useState(false);
-    const dragStartX = useRef(0);
-    const initialWidth = useRef(width);
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     const handleCellClick = (outerIndex, innerIndex) => {
 
@@ -19,28 +18,7 @@ const Grid = ({ resources }) => {
         }));
     };
 
-    const handleMouseDown = (e) => {
-        setIsDragging(true);
-        dragStartX.current = e.clientX;
-        initialWidth.current = width;
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleMouseUp);
-    };
 
-    const handleMouseMove = (e) => {
-        if (isDragging) {
-            const deltaX = e.clientX - dragStartX.current;
-            setWidth(initialWidth.current + deltaX);
-        }
-    };
-
-    const handleMouseUp = () => {
-        setIsDragging(false);
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-    };
-
-    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     return (
         <div className='flex flex-col ml-48 pt-[55px]'>
@@ -51,17 +29,20 @@ const Grid = ({ resources }) => {
                             <div key={outerIndex} className='flex'>
                                 {Array.from({ length: 31 }, (_, innerIndex) => (
                                     <div
-                                        onClick={() => handleCellClick(outerIndex, innerIndex)}
+                                        onDoubleClick={() => handleCellClick(outerIndex, innerIndex)}
                                         key={innerIndex}
+                                        style={{
+                                            height: outerIndex === 0 ? '48px' : '64px',
+                                        }}
                                         id='box'
-                                        className='bg-neutral-900 w-28 h-16 border-2 px-1 flex items-center relative border-neutral-200 text-yellow-300 text-center'
+                                        className='bg-neutral-900 w-28   border-2 px-1 flex items-center justify-center relative border-neutral-200 text-yellow-300 text-center'
                                     >
                                         {outerIndex === 0 ? (
-                                            innerIndex + "  " + daysOfWeek[innerIndex % 7]
+                                            innerIndex + "   " + daysOfWeek[innerIndex % 7]
                                         ) : (
                                             <>
                                                 {clickedCells[`${outerIndex}-${innerIndex}`] && (
-                                                    <ResizableDiv />)}
+                                                    <ResizableDiv inner={innerIndex} outer={outerIndex} />)}
                                             </>
                                         )}
                                     </div>
@@ -71,7 +52,7 @@ const Grid = ({ resources }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
