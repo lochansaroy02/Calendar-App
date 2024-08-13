@@ -104,7 +104,7 @@ const ResizableDiv = ({ inner, outer }) => {
             border: isHovered ? "2px solid white" : "2px solid transparent",
             transition: "background-color 0.2s, border 0.3s"
           }} onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave} className=" h-full z-30  p-1   rounded-lg relative">
+          onMouseLeave={handleMouseLeave} className=" h-full z-30  p-1  cursor-pointer  rounded-lg relative">
 
 
           <div ref={refLeft} className="absolute left-0  rounded-s-lg top-0 h-12    w-1   cursor-ew-resize"> </div>

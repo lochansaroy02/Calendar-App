@@ -2,143 +2,12 @@ import React from 'react'
 
 const ResourceBar = ({ setResources, }) => {
   const [ascii, setAscii] = React.useState(65)
+  const [resourceLength, setResourceLength] = React.useState(10)
   const lengthObj = {
-    length: 15
+    length: resourceLength
   }
 
 
-  let colorObj = [
-    {
-
-      value: 1,
-      color: 'red',
-      colorCode: '#FF0000'
-    }, {
-      value: 2,
-      color: 'blue',
-      colorCode: '#0000FF'
-
-    },
-    {
-      value: 3,
-      color: 'green',
-      colorCode: '#008000'
-
-    },
-    {
-      value: 4,
-      color: 'yellow',
-      colorCode: '#FFFF00'
-
-    },
-    {
-      value: 5,
-      color: 'orange',
-      colorCode: '#FFA500'
-
-    },
-    {
-      value: 6,
-      color: 'purple',
-      colorCode: '#800080'
-
-    },
-    {
-      value: 7,
-      color: 'pink',
-      colorCode: '#FFC0CB'
-
-    },
-    {
-      value: 8,
-      color: 'brown',
-      colorCode: '#A52A2A'
-
-    },
-    {
-      value: 9,
-      color: 'black',
-      colorCode: '#000000'
-
-    },
-    {
-      value: 10,
-      color: 'white',
-      colorCode: '#FFFFFF'
-
-    },
-    {
-      value: 11,
-      color: 'grey',
-      colorCode: '#808080'
-
-    },
-    {
-      value: 12,
-      color: 'cyan',
-      colorCode: '#00FFFF'
-
-    },
-    {
-      value: 13,
-      color: 'magenta',
-      colorCode: '#FF00FF'
-
-    },
-    {
-      value: 14,
-      color: 'lightgreen',
-      colorCode: '#90EE90'
-
-    },
-    {
-      value: 15,
-      color: 'lightblue',
-      colorCode: '#ADD8E6'
-
-    },
-    {
-      value: 16,
-      color: 'lightyellow',
-      colorCode: '#FFFFE0'
-
-    },
-    {
-      value: 17,
-      color: 'lightorange',
-      colorCode: '#FFD700'
-
-    },
-    {
-      value: 18,
-      color: 'lightpurple',
-      colorCode: '#9370DB'
-
-    },
-    {
-      value: 19,
-      color: 'lightpink',
-      colorCode: '#FFB6C1'
-
-    },
-    {
-      value: 20,
-      color: 'lightbrown',
-      colorCode: '#D2B48C'
-
-    },
-    {
-      value: 21,
-      color: 'lightblack',
-      colorCode: '#696969'
-
-    },
-    {
-      value: 22,
-      color: 'lightwhite',
-      colorCode: '#F5F5F5'
-    }
-  ]
   setResources(lengthObj.length)
 
 
@@ -158,6 +27,12 @@ const ResourceBar = ({ setResources, }) => {
           )
         })
       }
+      <div onClick={() => {
+        setResourceLength(resourceLength + 1)
+        setAscii(ascii + 1)
+      }} className='bg-neutral-900 flex  absolute bottom-2 w-48 h-14  cursor-pointer font-semibold  border-2 border-b-0  py-2  border-neutral-500  bg text-yellow-300'>
+        <h1 className='ml-6'>Add</h1>
+      </div>
     </div>
   )
 }
